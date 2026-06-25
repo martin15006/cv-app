@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { listar, crear, actualizar, borrar } from '../../lib/crud.js'
 import Formulario from './Formulario.jsx'
+import Modal from './Modal.jsx'
 
 export default function TablaCrud({ seccion }) {
   const [filas, setFilas] = useState([])
@@ -46,30 +47,36 @@ export default function TablaCrud({ seccion }) {
       .slice(0, 2)
       .join(' — ')
 
+  const filaEdit = editando && editando !== 'nuevo' ? filas.find((f) => f.id === editando) : null
+
   return (
     <section className="a-panel">
-      <h3>{seccion.titulo}</h3>
+      <div className="a-row" style={{ padding: '0 0 12px', borderBottom: '1px solid var(--line-soft)' }}>
+        <h3 style={{ margin: 0, flex: 1 }}>{seccion.titulo}</h3>
+        <button className="a-btn small primary" onClick={() => setEditando('nuevo')}>+ Añadir</button>
+      </div>
       {error && <p className="a-msg a-err">{error}</p>}
 
       {filas.map((f) => (
-        <div key={f.id}>
-          <div className="a-row">
-            <span>{resumen(f)}</span>
-            <button className="a-btn small" onClick={() => setEditando(f.id)}>Editar</button>
-            <button className="a-btn small danger" onClick={() => eliminar(f.id)}>Borrar</button>
-          </div>
-          {editando === f.id && (
-            <Formulario campos={seccion.campos} inicial={f} onGuardar={guardar} onCancelar={() => setEditando(null)} />
-          )}
+        <div className="a-row" key={f.id}>
+          <span>{resumen(f)}</span>
+          <button className="a-btn small" onClick={() => setEditando(f.id)}>Editar</button>
+          <button className="a-btn small danger" onClick={() => eliminar(f.id)}>Borrar</button>
         </div>
       ))}
 
-      {editando === 'nuevo' ? (
-        <Formulario campos={seccion.campos} onGuardar={guardar} onCancelar={() => setEditando(null)} />
-      ) : (
-        <button className="a-btn primary small" style={{ marginTop: 12 }} onClick={() => setEditando('nuevo')}>
-          + Añadir {seccion.singular}
-        </button>
+      {editando && (
+        <Modal
+          titulo={editando === 'nuevo' ? `Añadir ${seccion.singular}` : `Editar ${seccion.singular}`}
+          onCerrar={() => setEditando(null)}
+        >
+          <Formulario
+            campos={seccion.campos}
+            inicial={filaEdit || {}}
+            onGuardar={guardar}
+            onCancelar={() => setEditando(null)}
+          />
+        </Modal>
       )}
     </section>
   )

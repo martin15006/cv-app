@@ -4,9 +4,9 @@
 body.tema-admin {
   margin: 0;
   background:
-    radial-gradient(800px 500px at 100% -10%, rgba(168,85,247,0.12), transparent 60%),
-    radial-gradient(700px 600px at 0% 110%, rgba(34,211,238,0.08), transparent 60%),
-    var(--bg);
+    radial-gradient(800px 500px at 100% -10%, rgba(168,85,247,0.16), transparent 60%),
+    radial-gradient(700px 600px at 0% 110%, rgba(34,211,238,0.12), transparent 60%),
+    #181821;
   color: var(--ink);
   font-family: var(--body);
   -webkit-font-smoothing: antialiased;
@@ -21,7 +21,7 @@ body.tema-admin {
 
 .a-panel {
   position: relative;
-  background: var(--panel);
+  background: rgba(34,34,50,0.62);
   border: 1px solid var(--line);
   border-radius: 14px;
   padding: 20px 22px;
@@ -41,7 +41,7 @@ label.a-field {
 }
 .a-input, .a-area {
   font-family: var(--body); font-size: 14px; color: var(--ink);
-  background: rgba(8,8,14,0.6); border: 1px solid var(--line-soft);
+  background: rgba(18,18,26,0.7); border: 1px solid var(--line-soft);
   border-radius: 8px; padding: 9px 11px; outline: none;
   transition: border-color .2s, box-shadow .2s;
 }
@@ -77,3 +77,24 @@ label.a-field {
 .a-msg.a-err { color: #ff9a9a; }
 
 .a-login { max-width: 380px; margin: 90px auto; }
+
+/* ===== modal de edición ===== */
+.a-modal-bg {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(6,6,12,.72);
+  backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 42px 16px; overflow: auto;
+}
+.a-modal {
+  width: 100%; max-width: 620px;
+  background: #1c1c28; border: 1px solid var(--line);
+  border-radius: 14px; box-shadow: 0 24px 70px rgba(0,0,0,.55), var(--glow);
+}
+.a-modal-top {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 15px 20px; border-bottom: 1px solid var(--line-soft);
+}
+.a-modal-top h3 { margin: 0; font-family: var(--disp); font-size: 1.15rem; }
+.a-modal-body { padding: 18px 20px 22px; }
+.a-modal .a-form { border: none; padding: 0; margin: 0; background: none; }

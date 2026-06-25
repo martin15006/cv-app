@@ -1,7 +1,13 @@
-import { Document, Page, View, Text, StyleSheet, Link } from '@react-pdf/renderer'
+import { Document, Page, View, Text, StyleSheet, Link, Font } from '@react-pdf/renderer'
+
+// No partir palabras/URLs a la mitad: cada palabra se mantiene entera y salta
+// completa a la línea de abajo si no cabe (evita "https://mar-\ntin15006...").
+Font.registerHyphenationCallback((word) => [word])
 
 // Helvetica (fuente integrada) soporta tildes/ñ; saneamos los pocos símbolos que no.
 const clean = (t) => (t ?? '').toString().replace(/↔/g, '-').replace(/∞/g, 'inf')
+// Para mostrar enlaces limpios (sin https://) en la línea de contacto.
+const sinEsquema = (v) => (v ?? '').toString().replace(/^https?:\/\//, '')
 
 const C = { ink: '#111', dim: '#333', faint: '#666', accent: '#5b3fb0' }
 
@@ -38,7 +44,7 @@ function SecHead({ children }) {
 
 export default function CvPdf({ cv }) {
   const p = cv.perfil || {}
-  const contacto = [p.ubicacion, p.telefono, p.email, p.github, p.portafolio].filter(Boolean).join('   ·   ')
+  const contacto = [p.ubicacion, p.telefono, p.email, p.github, p.portafolio].filter(Boolean).map(sinEsquema).join('   ·   ')
 
   return (
     <Document author={clean(p.nombre)} title={`CV ${clean(p.nombre)}`}>

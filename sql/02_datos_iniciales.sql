@@ -10,7 +10,7 @@ values (1,
  'Aprendiz SENA. Construyo aplicaciones web y móviles con React, React Native y Node.js sobre PostgreSQL.',
  'Desarrollador full-stack, Aprendiz SENA. Desarrollo aplicaciones web y móviles con JavaScript/TypeScript, React, React Native y Node.js (Express/NestJS) sobre PostgreSQL. He trabajado en proyectos reales —un sistema de gestión de flota para el SENA (SENNOVA) y un proyecto en equipo donde desarrollé la parte móvil—, con autenticación por roles, APIs REST y Git. Resolución de problemas, aprendizaje autónomo y trabajo en equipo. Inglés básico-intermedio.',
  'Ibagué, Tolima', '313 647 2081 · 315 788 1826', 'juanitomartin15006@gmail.com',
- 'github.com/martin15006', 'https://martin15006.github.io', true);
+ 'github.com/martin15006', 'https://cv-app-lemon.vercel.app', true);
 
 insert into idiomas (idioma, nivel, orden) values
  ('Español', 'nativo', 1),

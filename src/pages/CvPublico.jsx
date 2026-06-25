@@ -149,12 +149,31 @@ export default function CvPublico() {
       a.click()
       a.remove()
       URL.revokeObjectURL(url)
+      sessionStorage.removeItem('pdf-reload')
     } catch (e) {
-      alert('No se pudo generar el PDF: ' + e.message)
+      const msg = String(e?.message || e)
+      // Si el chunk del PDF cambió por un redeploy, esta pestaña quedó con la
+      // versión vieja: recargamos para traer la nueva y reintentamos UNA vez.
+      const chunkViejo = /dynamically imported module|module script failed|Failed to fetch/i.test(msg)
+      if (chunkViejo && sessionStorage.getItem('pdf-reload') !== 'done') {
+        sessionStorage.setItem('pdf-reload', 'pending')
+        window.location.reload()
+        return
+      }
+      sessionStorage.removeItem('pdf-reload')
+      alert('No se pudo generar el PDF: ' + msg)
     } finally {
       setPdfLoading(false)
     }
   }
+
+  // Tras recargar por un chunk viejo, reintenta la descarga automáticamente.
+  useEffect(() => {
+    if (cv && sessionStorage.getItem('pdf-reload') === 'pending') {
+      sessionStorage.setItem('pdf-reload', 'done')
+      descargarPdf()
+    }
+  }, [cv])
 
   const p = cv?.perfil
   const [nA, nB] = partirNombre(p?.nombre)

@@ -31,31 +31,28 @@ export default function Formulario({ campos, inicial = {}, onGuardar, onCancelar
   const set = (n, v) => setValores((prev) => ({ ...prev, [n]: v }))
 
   return (
-    <form
-      onSubmit={submit}
-      style={{ display: 'grid', gap: 8, margin: '10px 0', padding: 12, border: '1px solid #ccc', borderRadius: 8, background: '#fafafa' }}
-    >
+    <form onSubmit={submit} className="a-form">
       {campos.map((c) => (
-        <label key={c.n} style={{ display: 'grid', gap: 2, fontSize: 13 }}>
+        <label key={c.n} className="a-field">
           {c.label}
           {c.tipo === 'lista' || c.tipo === 'area' ? (
             <textarea
-              rows={c.tipo === 'lista' ? 4 : 3}
-              value={valores[c.n]}
-              onChange={(e) => set(c.n, e.target.value)}
+              className="a-area" rows={c.tipo === 'lista' ? 4 : 3}
+              value={valores[c.n]} onChange={(e) => set(c.n, e.target.value)}
             />
           ) : (
             <input
-              type={c.tipo === 'numero' ? 'number' : 'text'}
-              value={valores[c.n]}
-              onChange={(e) => set(c.n, e.target.value)}
+              className="a-input" type={c.tipo === 'numero' ? 'number' : 'text'}
+              value={valores[c.n]} onChange={(e) => set(c.n, e.target.value)}
             />
           )}
         </label>
       ))}
-      <div style={{ display: 'flex', gap: 8 }}>
-        <button type="submit" disabled={guardando}>{guardando ? 'Guardando…' : 'Guardar'}</button>
-        {onCancelar && <button type="button" onClick={onCancelar}>Cancelar</button>}
+      <div className="a-btnrow">
+        <button type="submit" className="a-btn primary" disabled={guardando}>
+          {guardando ? 'Guardando…' : 'Guardar'}
+        </button>
+        {onCancelar && <button type="button" className="a-btn" onClick={onCancelar}>Cancelar</button>}
       </div>
     </form>
   )

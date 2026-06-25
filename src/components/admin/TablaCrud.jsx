@@ -47,16 +47,16 @@ export default function TablaCrud({ seccion }) {
       .join(' — ')
 
   return (
-    <section style={{ marginBottom: 28 }}>
+    <section className="a-panel">
       <h3>{seccion.titulo}</h3>
-      {error && <p style={{ color: 'crimson' }}>{error}</p>}
+      {error && <p className="a-msg a-err">{error}</p>}
 
       {filas.map((f) => (
         <div key={f.id}>
-          <div style={{ display: 'flex', gap: 8, alignItems: 'center', padding: '4px 0', borderBottom: '1px solid #eee' }}>
-            <span style={{ flex: 1 }}>{resumen(f)}</span>
-            <button onClick={() => setEditando(f.id)}>Editar</button>
-            <button onClick={() => eliminar(f.id)}>Borrar</button>
+          <div className="a-row">
+            <span>{resumen(f)}</span>
+            <button className="a-btn small" onClick={() => setEditando(f.id)}>Editar</button>
+            <button className="a-btn small danger" onClick={() => eliminar(f.id)}>Borrar</button>
           </div>
           {editando === f.id && (
             <Formulario campos={seccion.campos} inicial={f} onGuardar={guardar} onCancelar={() => setEditando(null)} />
@@ -67,7 +67,7 @@ export default function TablaCrud({ seccion }) {
       {editando === 'nuevo' ? (
         <Formulario campos={seccion.campos} onGuardar={guardar} onCancelar={() => setEditando(null)} />
       ) : (
-        <button onClick={() => setEditando('nuevo')} style={{ marginTop: 8 }}>
+        <button className="a-btn primary small" style={{ marginTop: 12 }} onClick={() => setEditando('nuevo')}>
           + Añadir {seccion.singular}
         </button>
       )}

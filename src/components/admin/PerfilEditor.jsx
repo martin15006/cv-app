@@ -20,13 +20,13 @@ export default function PerfilEditor() {
     }
   }
 
-  if (!perfil) return <p>Cargando perfil…</p>
-
   return (
-    <section style={{ marginBottom: 28 }}>
+    <section className="a-panel">
       <h3>Perfil</h3>
-      {msg && <p>{msg}</p>}
-      <Formulario campos={CAMPOS_PERFIL} inicial={perfil} onGuardar={guardar} />
+      {msg && <p className="a-msg">{msg}</p>}
+      {perfil
+        ? <Formulario campos={CAMPOS_PERFIL} inicial={perfil} onGuardar={guardar} />
+        : <p style={{ color: 'var(--ink-faint)' }}>Cargando perfil…</p>}
     </section>
   )
 }

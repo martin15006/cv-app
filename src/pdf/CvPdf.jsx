@@ -7,9 +7,9 @@ const C = { ink: '#111', dim: '#333', faint: '#666', accent: '#5b3fb0' }
 
 const s = StyleSheet.create({
   page: { paddingTop: 34, paddingBottom: 36, paddingHorizontal: 40, fontSize: 9.5, color: C.dim, fontFamily: 'Helvetica', lineHeight: 1.4 },
-  nombre: { fontSize: 22, fontFamily: 'Helvetica-Bold', color: C.ink },
-  titulo: { fontSize: 11, color: C.accent, marginTop: 2, fontFamily: 'Helvetica-Bold' },
-  tagline: { fontSize: 9.5, color: C.dim, marginTop: 3 },
+  nombre: { fontSize: 22, fontFamily: 'Helvetica-Bold', color: C.ink, lineHeight: 1.3, marginBottom: 5 },
+  titulo: { fontSize: 11, color: C.accent, fontFamily: 'Helvetica-Bold', marginBottom: 4 },
+  tagline: { fontSize: 9.5, color: C.dim, marginBottom: 2 },
   contacto: { fontSize: 8.5, color: C.faint, marginTop: 6 },
   headBox: { alignSelf: 'flex-start', borderBottomWidth: 1.4, borderBottomColor: C.accent, marginTop: 15, marginBottom: 6, paddingBottom: 2, paddingRight: 14 },
   head: { fontSize: 12.5, fontFamily: 'Helvetica-Bold', color: C.ink },

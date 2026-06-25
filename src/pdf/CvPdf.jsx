@@ -70,20 +70,20 @@ export default function CvPdf({ cv }) {
           </View>
         ))}
 
-        <SecHead>Educación e idiomas</SecHead>
+        <SecHead>Educación</SecHead>
         {cv.educacion.map((e) => (
           <View key={e.id} style={{ marginBottom: 4 }} wrap={false}>
             <Text style={s.eduTitle}>{clean(e.titulo)}</Text>
             <Text style={s.eduP}>{clean([e.institucion, e.detalle].filter(Boolean).join(' · '))}</Text>
           </View>
         ))}
-        <View style={{ marginTop: 4 }}>
-          {cv.idiomas.map((i) => (
-            <Text key={i.id} style={s.lang}>
-              <Text style={{ fontFamily: 'Helvetica-Bold', color: C.ink }}>{clean(i.idioma)}: </Text>{clean(i.nivel)}
-            </Text>
-          ))}
-        </View>
+
+        <SecHead>Idiomas</SecHead>
+        {cv.idiomas.map((i) => (
+          <Text key={i.id} style={s.lang}>
+            <Text style={{ fontFamily: 'Helvetica-Bold', color: C.ink }}>{clean(i.idioma)}: </Text>{clean(i.nivel)}
+          </Text>
+        ))}
 
         <SecHead>Cursos y certificaciones</SecHead>
         {cv.cursos.map((c) => (

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 function aTexto(valor, tipo) {
   if (tipo === 'lista') return (valor || []).join('\n')
@@ -10,6 +10,28 @@ function aValor(texto, tipo) {
     return texto.split('\n').map((s) => s.trim()).filter(Boolean)
   if (tipo === 'numero') return texto === '' ? 0 : Number(texto)
   return texto
+}
+
+// Textarea que crece solo para mostrar todo el contenido (sin scroll interno).
+function AutoArea({ value, onChange }) {
+  const ref = useRef(null)
+  const ajustar = () => {
+    const el = ref.current
+    if (!el) return
+    el.style.height = 'auto'
+    el.style.height = Math.max(el.scrollHeight, 70) + 'px'
+  }
+  useEffect(() => { ajustar() }, [value])
+  return (
+    <textarea
+      ref={ref}
+      className="a-area"
+      value={value}
+      onChange={onChange}
+      onInput={ajustar}
+      style={{ overflow: 'hidden', resize: 'none' }}
+    />
+  )
 }
 
 export default function Formulario({ campos, inicial = {}, onGuardar, onCancelar }) {
@@ -36,10 +58,7 @@ export default function Formulario({ campos, inicial = {}, onGuardar, onCancelar
         <label key={c.n} className="a-field">
           {c.label}
           {c.tipo === 'lista' || c.tipo === 'area' ? (
-            <textarea
-              className="a-area" rows={c.tipo === 'lista' ? 4 : 3}
-              value={valores[c.n]} onChange={(e) => set(c.n, e.target.value)}
-            />
+            <AutoArea value={valores[c.n]} onChange={(e) => set(c.n, e.target.value)} />
           ) : (
             <input
               className="a-input" type={c.tipo === 'numero' ? 'number' : 'text'}

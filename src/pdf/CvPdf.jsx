@@ -17,6 +17,7 @@ const s = StyleSheet.create({
   titulo: { fontSize: 11, color: C.accent, fontFamily: 'Helvetica-Bold', marginBottom: 4 },
   tagline: { fontSize: 9.5, color: C.dim, marginBottom: 2 },
   contacto: { fontSize: 8.5, color: C.faint, marginTop: 6 },
+  cLink: { fontSize: 8.5, color: C.faint, textDecoration: 'none' },
   headBox: { alignSelf: 'flex-start', borderBottomWidth: 1.4, borderBottomColor: C.accent, marginTop: 15, marginBottom: 6, paddingBottom: 2, paddingRight: 14 },
   head: { fontSize: 12.5, fontFamily: 'Helvetica-Bold', color: C.ink },
   perfil: { fontSize: 9.5, color: C.dim },
@@ -44,7 +45,14 @@ function SecHead({ children }) {
 
 export default function CvPdf({ cv }) {
   const p = cv.perfil || {}
-  const contacto = [p.ubicacion, p.telefono, p.email, p.github, p.portafolio].filter(Boolean).map(sinEsquema).join('   ·   ')
+  const hrefWeb = p.portafolio ? (/^https?:\/\//.test(p.portafolio) ? p.portafolio : `https://${p.portafolio}`) : null
+  // Enlaces clickeables de verdad en el PDF (se muestran sin https://); ubicación y teléfono van como texto.
+  const contacto = []
+  if (p.ubicacion) contacto.push(clean(p.ubicacion))
+  if (p.telefono) contacto.push(clean(p.telefono))
+  if (p.email) contacto.push(<Link key="mail" src={`mailto:${p.email}`} style={s.cLink}>{clean(p.email)}</Link>)
+  if (p.github) contacto.push(<Link key="gh" src={`https://${sinEsquema(p.github)}`} style={s.cLink}>{clean(sinEsquema(p.github))}</Link>)
+  if (hrefWeb) contacto.push(<Link key="web" src={hrefWeb} style={s.cLink}>{clean(sinEsquema(p.portafolio))}</Link>)
 
   return (
     <Document author={clean(p.nombre)} title={`CV ${clean(p.nombre)}`}>
@@ -52,7 +60,7 @@ export default function CvPdf({ cv }) {
         <Text style={s.nombre}>{clean(p.nombre)}</Text>
         <Text style={s.titulo}>{clean(p.titulo)}</Text>
         <Text style={s.tagline}>{clean(p.tagline)}</Text>
-        <Text style={s.contacto}>{clean(contacto)}</Text>
+        <Text style={s.contacto}>{contacto.flatMap((el, i) => (i === 0 ? [el] : ['   ·   ', el]))}</Text>
 
         <SecHead>Perfil profesional</SecHead>
         <Text style={s.perfil}>{clean(p.perfil_texto)}</Text>

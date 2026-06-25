@@ -27,6 +27,7 @@ const Icono = {
 export default function CvPublico() {
   const [cv, setCv] = useState(null)
   const [error, setError] = useState(null)
+  const [pdfLoading, setPdfLoading] = useState(false)
 
   useEffect(() => {
     document.body.classList.add('cv-monarca')
@@ -131,6 +132,30 @@ export default function CvPublico() {
     return () => limpiezas.forEach((fn) => fn())
   }, [cv])
 
+  async function descargarPdf() {
+    if (!cv) return
+    setPdfLoading(true)
+    try {
+      const [{ pdf }, { default: CvPdf }] = await Promise.all([
+        import('@react-pdf/renderer'),
+        import('../pdf/CvPdf.jsx'),
+      ])
+      const blob = await pdf(<CvPdf cv={cv} />).toBlob()
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'CV-Juan-Sebastian-Martin-Moncada.pdf'
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+      URL.revokeObjectURL(url)
+    } catch (e) {
+      alert('No se pudo generar el PDF: ' + e.message)
+    } finally {
+      setPdfLoading(false)
+    }
+  }
+
   const p = cv?.perfil
   const [nA, nB] = partirNombre(p?.nombre)
   const [lead, resto] = leadBold(p?.perfil_texto)
@@ -183,7 +208,7 @@ export default function CvPublico() {
                   <div className="cta-row">
                     <a className="btn primary" href={`mailto:${p.email}`}>&#9993; Contactar</a>
                     <a className="btn ghost" href={`https://${p.github?.replace(/^https?:\/\//, '')}`} target="_blank" rel="noopener">&#9740; GitHub</a>
-                    <button className="btn ghost" onClick={() => window.print()}>&#11015; Descargar PDF</button>
+                    <button className="btn ghost" onClick={descargarPdf} disabled={pdfLoading}>&#11015; {pdfLoading ? 'Generando…' : 'Descargar PDF'}</button>
                   </div>
                 </div>
                 <aside className="hero-side">

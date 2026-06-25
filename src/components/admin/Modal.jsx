@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { createPortal } from 'react-dom'
 
 export default function Modal({ titulo, onCerrar, children }) {
   useEffect(() => {
@@ -11,7 +12,9 @@ export default function Modal({ titulo, onCerrar, children }) {
     }
   }, [onCerrar])
 
-  return (
+  // Portal al <body>: así el modal escapa de cualquier panel con
+  // backdrop-filter/transform y su position:fixed cubre toda la pantalla.
+  return createPortal(
     <div className="a-modal-bg" onClick={onCerrar}>
       <div className="a-modal" onClick={(e) => e.stopPropagation()}>
         <div className="a-modal-top">
@@ -20,6 +23,7 @@ export default function Modal({ titulo, onCerrar, children }) {
         </div>
         <div className="a-modal-body">{children}</div>
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }

@@ -1,5 +1,5 @@
 import { supabase } from './supabase.js'
-import { ordenar } from './util.js'
+import { ordenar, ordenarPorRango } from './util.js'
 
 /** Trae todas las secciones del CV desde Supabase. */
 export async function cargarCv() {
@@ -16,7 +16,7 @@ export async function cargarCv() {
   return {
     perfil: perfil.data,
     habilidades: ordenar(habilidades.data),
-    proyectos: ordenar(proyectos.data),
+    proyectos: ordenarPorRango(proyectos.data),
     educacion: ordenar(educacion.data),
     cursos: ordenar(cursos.data),
     idiomas: ordenar(idiomas.data),

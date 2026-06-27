@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { listar, crear, actualizar, borrar } from '../../lib/crud.js'
+import { ordenarPorRango } from '../../lib/util.js'
 import Formulario from './Formulario.jsx'
 import Modal from './Modal.jsx'
 
@@ -11,7 +12,8 @@ export default function TablaCrud({ seccion }) {
   const recargar = useCallback(async () => {
     try {
       setError(null)
-      setFilas(await listar(seccion.tabla))
+      const data = await listar(seccion.tabla)
+      setFilas(seccion.tabla === 'proyectos' ? ordenarPorRango(data) : data)
     } catch (e) {
       setError(e.message)
     }

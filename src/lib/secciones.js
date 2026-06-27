@@ -18,7 +18,7 @@ export const SECCIONES = [
       { n: 'stack', label: 'Stack (uno por línea)', tipo: 'lista' },
       { n: 'bullets', label: 'Logros (uno por línea)', tipo: 'lista' },
       { n: 'enlace', label: 'Enlace', tipo: 'texto' },
-      { n: 'rango', label: 'Rango (S/A/B)', tipo: 'texto' },
+      { n: 'rango', label: 'Rango (S/A/B)', tipo: 'texto', upper: true },
       { n: 'orden', label: 'Orden', tipo: 'numero' },
     ],
   },

@@ -45,7 +45,11 @@ export default function Formulario({ campos, inicial = {}, onGuardar, onCancelar
   function submit(e) {
     e.preventDefault()
     const fila = {}
-    campos.forEach((c) => { fila[c.n] = aValor(valores[c.n], c.tipo) })
+    campos.forEach((c) => {
+      let v = aValor(valores[c.n], c.tipo)
+      if (c.upper && typeof v === 'string') v = v.toUpperCase()
+      fila[c.n] = v
+    })
     setGuardando(true)
     Promise.resolve(onGuardar(fila)).finally(() => setGuardando(false))
   }
@@ -62,7 +66,8 @@ export default function Formulario({ campos, inicial = {}, onGuardar, onCancelar
           ) : (
             <input
               className="a-input" type={c.tipo === 'numero' ? 'number' : 'text'}
-              value={valores[c.n]} onChange={(e) => set(c.n, e.target.value)}
+              value={valores[c.n]}
+              onChange={(e) => set(c.n, c.upper ? e.target.value.toUpperCase() : e.target.value)}
             />
           )}
         </label>
